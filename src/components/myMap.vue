@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, onBeforeUnmount } from 'vue'
-import { TileMapServiceImageryProvider, Viewer, buildModuleUrl } from 'cesium'
+import { TileMapServiceImageryProvider, Viewer, buildModuleUrl, WebMapTileServiceImageryProvider } from 'cesium'
 import 'cesium/Build/CesiumUnminified/Widgets/widgets.css'
 import { useMapStore } from "@/stores/map"
 
@@ -33,13 +33,50 @@ console.log(`模式: ${mode}, CESIUM_BASE_URL: ${cesiumBaseUrl}`)
 const tdtKey = import.meta.env.VITE_TDT_KEY
 onMounted(() => {
   viewer = new Viewer(viewerDivRef.value as HTMLElement, {
-    imageryProvider: new TileMapServiceImageryProvider({
-      // 对于 CESIUM_BASE_URL 下的静态资源，推荐用 buildModuleUrl 获取
-      url: buildModuleUrl('Assets/Textures/NaturalEarthII'),
+    // imageryProvider: new TileMapServiceImageryProvider({
+    //   // 对于 CESIUM_BASE_URL 下的静态资源，推荐用 buildModuleUrl 获取
+    //   url: buildModuleUrl('Assets/Textures/NaturalEarthII'),
+    // }),
+    imageryProvider: new WebMapTileServiceImageryProvider({
+      url: "http://t0.tianditu.gov.cn/vec_w/wmts?tk=" + tdtKey,
+      layer: "vec",
+      style: "default",
+      tileMatrixSetID: "w",
+      format: "tiles",
+      maximumLevel: 18,
     }),
     ...props.mapConfig
   })
+  // 配置地图
+  // 解决文字标注不清晰问题
+  viewer.scene.postProcessStages.fxaa.enabled = true
+  // 隐藏太阳和月亮
+  viewer.scene.sun.show = false
+  viewer.scene.moon.show = false
+  // 天地图添加
+  viewer.imageryLayers.addImageryProvider(new WebMapTileServiceImageryProvider({
+    url: "http://t{s}.tianditu.gov.cn/ibo_w/wmts?tk=" + tdtKey,
+    layer: "ibo",
+    style: "default",
+    tileMatrixSetID: "w",
+    format: "tiles",
+    maximumLevel: 18,
+    subdomains: ['0', '1', '2', '3', '4', '5', '6', '7']
+  }))
+  viewer.imageryLayers.addImageryProvider(new WebMapTileServiceImageryProvider({
+    url: "http://t0.tianditu.gov.cn/cva_w/wmts?tk=" + tdtKey,
+    layer: "cva",
+    style: "default",
+    tileMatrixSetID: "w",
+    format: "tiles",
+    maximumLevel: 18
+  }))
+  // 是否使用高动态范围渲染
+  viewer.scene.highDynamicRange = false
+  // 添加到仓库
   mapStore.setViewer(viewer)
+  // 定位
+  mapStore.setMapLocatingSignals([116.39, 39.7, 20000], "flyTo")
 })
 onBeforeUnmount(() => {
   if (viewer) {

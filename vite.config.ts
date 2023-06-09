@@ -84,7 +84,7 @@ export default defineConfig(({ command, mode }) => {
     )
   }
 
-  // 代码压缩
+  // Gzip代码压缩
   plugins.push(compress({
     threshold: 10 * 1024 // 10KB 以下不压缩
   }))
