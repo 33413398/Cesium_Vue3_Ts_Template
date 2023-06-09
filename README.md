@@ -24,7 +24,7 @@ pnpm dev
 pnpm build
 ```
 
-### 预览
+### 预览 打包后代码
 
 ```sh
 pnpm preview
