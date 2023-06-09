@@ -4,6 +4,8 @@
   "compilerOptions": {
     "composite": true,
     "module": "ESNext",
-    "types": ["node"]
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+    "types": ["node","vite/client"]
   }
 }

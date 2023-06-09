@@ -1,5 +1,4 @@
 import './assets/styles/index.scss';
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 // 响应式rem
@@ -14,3 +13,10 @@ app.use(createPinia())
 app.use(router)
 
 app.mount('#app')
+
+// 全局类型
+declare global {
+  interface Window {
+    CESIUM_BASE_URL: string
+  }
+}

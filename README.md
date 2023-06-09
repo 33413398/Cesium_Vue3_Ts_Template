@@ -10,17 +10,17 @@ pnpm install
 ### 运行项目
 
 ```sh
-pnpm run dev
+pnpm dev
 ```
 
 ### 打包项目
 
 ```sh
-pnpm run build
+pnpm build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### 预览
 
 ```sh
-pnpm run lint
+pnpm preview
 ```
