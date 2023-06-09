@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" name="HomeView">
 import { RouterLink } from 'vue-router'
 </script>
 

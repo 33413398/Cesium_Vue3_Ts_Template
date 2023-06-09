@@ -16,3 +16,8 @@ body {
   height: 100%;
   width: 100%;
 }
+
+// 去除地图logo
+.cesium-widget-credits{
+  display:none!important;
+}

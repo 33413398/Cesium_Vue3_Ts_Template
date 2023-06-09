@@ -6,6 +6,9 @@ import { viteExternalsPlugin } from 'vite-plugin-externals'
 import { insertHtml, h } from 'vite-plugin-insert-html'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import compress from 'vite-plugin-compression'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -47,7 +50,13 @@ export default defineConfig(({ command, mode }) => {
           src: command === 'build' ? `${cesiumBaseUrl}Cesium.js` : `${base}${cesiumBaseUrl}Cesium.js`
         })
       ]
-    })
+    }),
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
+    }),
+    Components({
+      resolvers: [ElementPlusResolver()],
+    }),
   ]
 
   if (command === 'serve') {
@@ -75,6 +84,7 @@ export default defineConfig(({ command, mode }) => {
     )
   }
 
+  // 代码压缩
   plugins.push(compress({
     threshold: 10 * 1024 // 10KB 以下不压缩
   }))

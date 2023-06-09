@@ -6,6 +6,7 @@ interface ImportMetaEnv {
   readonly VITE_APP_ENV: string
   readonly VITE_BASE_URL: string
   readonly VITE_CESIUM_BASE_URL: string
+  readonly VITE_TDT_KEY: string
   // 更多环境变量...
 }
 
